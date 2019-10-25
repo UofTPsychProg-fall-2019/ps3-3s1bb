@@ -19,10 +19,11 @@ import numpy as np
 import pandas as pd
 
 #%%
+# As edited by Corey
 # Question 1: reading and cleaning
 
 # read in the included IAT_2018.csv file
-IAT = ...
+IAT = pd.read_csv('/Users/Corey/Documents/Github/ps3-3s1bb/IAT_2018.csv')
 
 # rename and reorder the variables to the following (original name->new name):
 # session_id->id
@@ -38,15 +39,16 @@ IAT = ...
 # D_biep.White_Good_all->D_white_bias
 # Mn_RT_all_3467->rt
 
-IAT = ...
+IAT = IAT.rename(columns={'session_id': 'id','genderidentity' : 'gender', 'raceomb_002' : 'race', 'edu':'edu','politicalid_7':'politic', 'STATE':'state', 'att_7':'attitude', 'tblacks_0to10':'tblack', 'twhites_0to10': 'twhite','labels':'labels', 'D_biep.White_Good_all':'D_white_bias', 'Mn_RT_all_3467':'rt'})
+IAT = IAT[['id','gender','race','edu','politic','state','attitude','tblack','twhite','labels','D_white_bias', 'rt']]
 
 # remove all participants that have at least one missing value
-IAT_clean = ...
+IAT_clean = IAT.dropna(axis=0,how='any')
 
 
 # check out the replace method: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.replace.html
 # use this to recode gender so that 1=men and 2=women (instead of '[1]' and '[2]')
-IAT_clean ...
+IAT_clean = IAT_clean.replace({'gender': {'[1]': 'men', '[2]': 'women'}})
 
 # use this cleaned dataframe to answer the following questions
 
