@@ -14,7 +14,7 @@ overcome potential hurdles
 """
 
 #%% import packages 
-import os
+import os as os
 import numpy as np
 import pandas as pd
 
@@ -23,7 +23,8 @@ import pandas as pd
 # Question 1: reading and cleaning
 
 # read in the included IAT_2018.csv file
-IAT = pd.read_csv('/Users/Corey/Documents/Github/ps3-3s1bb/IAT_2018.csv')
+#IAT = pd.read_csv('/Users/Corey/Documents/Github/ps3-3s1bb/IAT_2018.csv')
+IAT = pd.read_csv('/Users/nicholebouffard/Documents/GitHub/ps3-3s1bb/IAT_2018.csv')
 
 # rename and reorder the variables to the following (original name->new name):
 # session_id->id
@@ -53,17 +54,28 @@ IAT_clean = IAT_clean.replace({'gender': {'[1]': 'men', '[2]': 'women'}})
 # use this cleaned dataframe to answer the following questions
 
 #%%
+# Edited by Nichole
 # Question 2: sorting and indexing
 
 # use sorting and indexing to print out the following information:
 
 # the ids of the 5 participants with the fastest reaction times
-
+IATsortedFast=IAT_clean.sort_values(by='rt')
+fastestIDs=list(IATsortedFast.id[0:5])
+print('Subjects with fastest rts:', str(fastestIDs))
 
 # the ids of the 5 men with the strongest white-good bias
+IATmen=IAT_clean[IAT_clean.gender == 'men']
+IATmensortedWB=IATmen.sort_values(by='D_white_bias', ascending= False)
+menIDs=list(IATmensortedWB.id[0:5])
+print('Men with strongest white bias:', str(menIDs))
 
 
 # the ids of the 5 women in new york with the strongest white-good bias
+IATwomen=IAT_clean.query('gender == "women" & state == "NY" ')
+IATwomensortedWB=IATwomen.sort_values(by='D_white_bias', ascending= False)
+womenIDs=list(IATwomensortedWB.id[0:5])
+print('Women in New York with strongest white bias:', str(menIDs))
 
 
 
