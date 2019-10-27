@@ -80,24 +80,41 @@ print('Women in New York with strongest white bias:', str(menIDs))
 
 
 #%%
+# Edited by Nick
 # Question 3: loops and pivots
 
 # check out the unique method: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.unique.html
 # use it to get a list of states
-states =...
+states = list(IAT_clean['state'].unique())
 
 # write a loop that iterates over states to calculate the median white-good
 # bias per state
 # store the results in a dataframe with 2 columns: state & bias
-...
-
+newdf=pd.DataFrame(columns={'state','med_wg_bias'})
+for st in states:
+    onestate=IAT_clean[IAT_clean.state == st]
+    median=onestate.median(axis=0)
+    wgb=median['D_white_bias']
+    tempdf=pd.DataFrame({'state' : st,
+                         'med_wg_bias' : wgb},index=[0])
+    newdf=pd.concat([newdf,tempdf],axis=0,sort= False)
+    
+newdf
 
 # now use the pivot_table function to calculate the same statistics
-state_bias=...
+state_bias= pd.pivot_table(IAT_clean, values = 'D_white_bias', 
+                            index = ['state'], 
+                            aggfunc=np.median)
+state_bias
 
 # make another pivot_table that calculates median bias per state, separately 
 # for each race (organized by columns)
-state_race_bias=...
+state_race_bias= pd.pivot_table(IAT_clean, values = 'D_white_bias', 
+                            index = ['state'], 
+                            columns = ['race'],
+                            aggfunc=np.median)
+
+state_race_bias
 
 #%%
 # Question 4: merging and more merging
